@@ -12,58 +12,115 @@ class FormData extends StatefulWidget {
 class FormDataState extends State<FormData> {
   final _namaController = TextEditingController();
   final _nimController = TextEditingController();
-  final _tahunController = TextEditingController();
+  final _shiftController = TextEditingController(); 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Input Data"),
+        backgroundColor: Colors.blueAccent, 
       ),
-      body: Container(
-        margin: const EdgeInsets.all(10),
+      body: SingleChildScrollView( 
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _inputCard(),
+              const SizedBox(height: 20),
+              _tombolSimpan()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inputCard() {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 5,
+      shadowColor: Colors.black54,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             _textboxNama(),
+            const SizedBox(height: 15),
             _textboxNIM(),
-            _textboxTahun(),
-            _tombolSimpan()
+            const SizedBox(height: 15),
+            _textboxShift(), 
           ],
         ),
       ),
     );
   }
 
-  _textboxNama() {
+  Widget _textboxNama() {
     return TextField(
-      decoration: const InputDecoration(labelText: "Nama"),
+      decoration: InputDecoration(
+        labelText: "Nama",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
       controller: _namaController,
     );
   }
 
-  _textboxNIM() {
+  Widget _textboxNIM() {
     return TextField(
-      decoration: const InputDecoration(labelText: "NIM"),
+      decoration: InputDecoration(
+        labelText: "NIM",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
       controller: _nimController,
     );
   }
 
-  _textboxTahun() {
+  Widget _textboxShift() {
     return TextField(
-      decoration: const InputDecoration(labelText: "Tahun Lahir"),
-      controller: _tahunController,
+      decoration: InputDecoration(
+        labelText: "Shift Baru", 
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      controller: _shiftController,
     );
   }
 
-  _tombolSimpan() {
+  Widget _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          String nama = _namaController.text;
-          String nim = _nimController.text;
-          int tahun = int.parse(_tahunController.text);
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  TampilData(nama: nama, nim: nim, tahun: tahun)));
-        },
-        child: const Text('Simpan'));
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 5,
+        shadowColor: Colors.black54,
+      ),
+      onPressed: () {
+        String nama = _namaController.text;
+        String nim = _nimController.text;
+        String shiftBaru = _shiftController.text;
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => TampilData(
+              nama: nama,
+              nim: nim,
+              shiftBaru: shiftBaru, 
+            ),
+          ),
+        );
+      },
+      child: const Text('Simpan', style: TextStyle(fontSize: 18)),
+    );
   }
 }

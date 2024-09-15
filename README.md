@@ -1,23 +1,100 @@
 # Tugas Pertemuan 2
 
-Fork dan clone repository ini, lalu jalankan perintah 
-```
-flutter pub get
-```
-Buatlah tampilan form yang berisi nama, nim, dan tahun lahir pada file `ui/form_data.dart`, lalu buatlah tampilan hasil dari input data tersebut pada file `ui/tampil_data.dart`
+// final _namaController = TextEditingController();
+// final _nimController = TextEditingController();
+// final _shiftController = TextEditingController();
+Masing-masing TextEditingController ini mengontrol satu TextField dan digunakan untuk mendapatkan data input dari pengguna.
 
-JELASKAN PROSES PASSING DATA DARI FORM MENUJU TAMPILAN DENGAN FILE `README.md`
+onPressed: () {
+  String nama = _namaController.text;
+  String nim = _nimController.text;
+  String shiftBaru = _shiftController.text;
 
-Buat tampilan semenarik mungkin untuk dilihat.
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => TampilData(
+        nama: nama,
+        nim: nim,
+        shiftBaru: shiftBaru,
+      ),
+    ),
+  );
+},
+Ketika tombol "Simpan" ditekan, mengambil data dari TextEditingController lalu memproses kemudian data yang diambil dari controller digunakan untuk membuat objek atau untuk ditampilkan di tampilan lain.
 
+class TampilData extends StatelessWidget {
+  final String nama;
+  final String nim;
+  final String shiftBaru;
 
-Nama : ___
+  const TampilData({
+    Key? key,
+    required this.nama,
+    required this.nim,
+    required this.shiftBaru,
+  }) : super(key: key);
 
-NIM : ___
+  @override
+  Widget build(BuildContext context) {
+    // Gunakan data untuk membangun tampilan
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Perkenalan"),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            elevation: 5,
+            shadowColor: Colors.black54,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _textWithIcon(icon: Icons.person, label: 'Nama', value: nama),
+                  const SizedBox(height: 10),
+                  _textWithIcon(icon: Icons.badge, label: 'NIM', value: nim),
+                  const SizedBox(height: 10),
+                  _textWithIcon(icon: Icons.calendar_today, label: 'Shift Baru', value: shiftBaru),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-Shift Baru: ___
+  Widget _textWithIcon({required IconData icon, required String label, required String value}) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.blueAccent),
+        const SizedBox(width: 10),
+        Text(
+          '$label: ',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
 
-## Screenshot
-Contoh :
-![Lampiran Form](form.png)
-![Lampiran Hasil](hasil.png)
+Tampilan menerima data melalui konstruktor dan menyimpannya sebagai variabel internal. Data ini kemudian digunakan untuk membangun tampilan di dalam build method tampil_data.dart
+
